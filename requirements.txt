@@ -8,7 +8,9 @@ packaging==24.1
 pillow==10.4.0
 psycopg2-binary==2.9.9
 PyJWT==2.9.0
+python-dotenv==1.0.1
 pytz==2024.1
 PyYAML==6.0.2
+setuptools==74.1.2
 sqlparse==0.5.1
 uritemplate==4.1.1
