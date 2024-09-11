@@ -10,6 +10,10 @@ class CustomUser(AbstractUser):
 
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='admin')
 
+    def __str__(self):
+        return f'{self.username} ({self.get_role_display()})'
+
+
 
 class Parcel(models.Model):
     STATUS_CHOICES = (
@@ -21,13 +25,21 @@ class Parcel(models.Model):
     description = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices = STATUS_CHOICES, default='pending')
     sender = models.ForeignKey(CustomUser, related_name='sent_parcels', on_delete=models.CASCADE)
-    reciever_name = models.CharField(max_length=255)
+    receiver_name = models.CharField(max_length=255)
     receiver_address = models.TextField()
     courier = models.ForeignKey(CustomUser, related_name='courier_parcels', on_delete=models.CASCADE )
     created_at = models.DateTimeField(auto_now_add=True)
     delivered_at = models.DateTimeField(null=True, blank=True)
 
+
+    def __str__(self):
+        return f'Parcel from {self.sender.username} to {self.receiver_name} - {self.get_status_display()}'
+
 class DeliveryProof(models.Model):
     parcel = models.OneToOneField(Parcel, on_delete=models.CASCADE, related_name='delivery_proof')
     image = models.ImageField(upload_to='delivery_proofs/')
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f'Proof for parcel {self.parcel.id} at {self.timestamp}'
